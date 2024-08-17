@@ -1,10 +1,12 @@
 import './App.css'
-import {Button} from "@mui/material";
+import Header from "./components/Header.jsx";
+import CriaCliente from "./pages/CriaCliente.jsx";
 
 function App() {
   return (
     <>
-      <Button variant="contained">Hello world</Button>
+      <Header/>
+      <CriaCliente />
     </>
   )
 }
