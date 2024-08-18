@@ -1,5 +1,5 @@
-import { AppBar, Button, Toolbar, Typography } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { AppBar, Toolbar, Typography } from '@mui/material';
+import HamburgerMenu from './hamburguerMenu';
 
 function Header() {
   return (
@@ -12,9 +12,7 @@ function Header() {
         <Typography variant="h5" component="div" sx={{ flexGrow: 1, color: "white" }}>
           E-Commerce de Cartas
         </Typography>
-        <Button color="inherit" component={Link} to="/">Home</Button>
-        <Button color="inherit" component={Link} to="/criacliente">Cria Cliente</Button>
-        <Button color="inherit" component={Link} to="/alterarcliente">Alterar Cliente</Button>
+        <HamburgerMenu/>
       </Toolbar>
     </AppBar>
   );
