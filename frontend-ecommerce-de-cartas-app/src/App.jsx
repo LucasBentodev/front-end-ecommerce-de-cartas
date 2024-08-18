@@ -1,17 +1,29 @@
-import './App.css'
+import {BrowserRouter as Router, Outlet, Route, Routes} from 'react-router-dom';
 import Header from "./components/Header.jsx";
 import AlterarCliente from './pages/AlterarCliente.jsx';
-/* import CriaCliente from "./pages/CriaCliente.jsx"; */
+import CriaCliente from "./pages/CriaCliente.jsx";
 
 function App() {
   return (
-    <>
-      <Header/>
-      {/* <CriaCliente/> */}
-      <AlterarCliente/>
-  
-    </>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<CriaCliente />} />
+          <Route path="/criacliente" element={<CriaCliente />} />
+          <Route path="/alterarcliente" element={<AlterarCliente />} />
+        </Route>
+      </Routes>
+    </Router>
   )
 }
 
-export default App
+function Layout() {
+  return (
+    <div>
+      <Header />
+      <Outlet />
+    </div>
+  )
+}
+
+export default App;
