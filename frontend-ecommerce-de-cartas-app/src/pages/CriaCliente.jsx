@@ -1,6 +1,6 @@
 import {useContext, useState} from "react";
 import { Grid,TextField,Typography,Container,Button} from "@mui/material";
-import Endereco from "../components/Endereco";
+import Endereco from "../components/Endereco.tsx";
 import CartaoDeCredito from "../components/CadastroCartao";
 import CartoesCadastrados from "../components/CartoesCadastrados";
 import { useTheme } from '@mui/material/styles';

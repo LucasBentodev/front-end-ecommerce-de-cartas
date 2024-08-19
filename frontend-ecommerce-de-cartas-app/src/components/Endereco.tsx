@@ -2,13 +2,14 @@ import { useState } from "react";
 import { Grid, TextField, Typography } from "@mui/material";
 import PropTypes from 'prop-types';
 import { useTheme } from '@mui/material/styles';
+import React from "react";
 
-function Endereco({ title, value }) {
+function Endereco({ title, value }: { title: string, value: Endereco }) {
     const [endereco, setEndereco] = useState(value);
 
     const theme = useTheme();
 
-    const handleChange = (event) => {
+    const handleChange = (event: { target: { name: string; value: string; }; }) => {
         setEndereco({
             ...endereco,
             [event.target.name]: event.target.value,
