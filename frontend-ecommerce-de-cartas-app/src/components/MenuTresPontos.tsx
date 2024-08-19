@@ -12,9 +12,9 @@ const options = [
 const ITEM_HEIGHT = 48;
 
 export default function MenuTresPontos() {
-  const [anchorEl, setAnchorEl] = React.useState(null);
+    const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
   const open = Boolean(anchorEl);
-  const handleClick = (event) => {
+    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
@@ -41,11 +41,13 @@ export default function MenuTresPontos() {
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
-        PaperProps={{
-          style: {
-            maxHeight: ITEM_HEIGHT * 4.5,
-            width: '20ch',
-          },
+        slotProps={{
+            paper: {
+                sx: {
+                    maxHeight: ITEM_HEIGHT * 4.5,
+                    width: '20ch',
+                },
+            },
         }}
       >
         {options.map((option) => (
