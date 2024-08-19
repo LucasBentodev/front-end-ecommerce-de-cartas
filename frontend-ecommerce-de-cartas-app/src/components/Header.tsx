@@ -1,5 +1,6 @@
 import { AppBar, Toolbar, Typography } from '@mui/material';
-import HamburgerMenu from './HamburguerMenu.tsx';
+import HamburgerMenu from './HamburguerMenu';
+import React from 'react';
 
 function Header() {
   return (
