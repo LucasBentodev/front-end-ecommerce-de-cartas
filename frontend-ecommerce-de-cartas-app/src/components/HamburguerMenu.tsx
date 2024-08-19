@@ -2,6 +2,7 @@ import { useState } from 'react'; // Importação correta
 import { Drawer, IconButton, List, ListItem, ListItemText, ListItemButton } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Link } from 'react-router-dom';
+import React from 'react';
 
 export default function HamburgerMenu() {
   const [open, setOpen] = useState(false);
