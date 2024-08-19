@@ -1,6 +1,7 @@
 import * as React from 'react';
+import {useState} from 'react';
 import Button from '@mui/material/Button';
-import { styled } from '@mui/material/styles';
+import {styled} from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
@@ -9,7 +10,6 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
-import { useState } from 'react';
 import Box from '@mui/material/Box';
 
 
@@ -37,20 +37,18 @@ export default function CartaoDeCredito() {
     bandeiraCartao : '',
     codigoDeSeguranca : ''
    });
-   
-   const handleChange = (event) => {
-    setCartaoDeCredito({
-      ...cartaoDeCredito,
-      [event.target.name]: event.target.value,
-    });
-  };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    setOpen(false);
-  };
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setCartaoDeCredito({
+            ...cartaoDeCredito,
+            [event.target.name]: event.target.value,
+        });
+    };
 
-
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        setOpen(false);
+    };
 
   return (
     <React.Fragment>
