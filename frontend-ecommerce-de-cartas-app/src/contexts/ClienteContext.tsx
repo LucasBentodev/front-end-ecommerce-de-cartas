@@ -40,9 +40,9 @@ type Endereco = {
 export const ClienteContext = createContext({});
 
 export const ClienteContextProvider = ({children}: {children: ReactNode}) => {
-    const [clientes, setClientes] = useState<Cliente[]>([]);
 
-    const mockCliente: Cliente = {
+    const mockCliente: Cliente[] = [{
+        id: 1,
         nome: "João Silva",
         telefone: "123456789",
         email: "joao.silva@example.com",
@@ -79,11 +79,17 @@ export const ClienteContextProvider = ({children}: {children: ReactNode}) => {
                 codigoDeSeguranca: "456",
             },
         ],
-    };
+    }];
 
-    // setClientes([mockCliente]);
+    const [clientes, setClientes] = useState<Cliente[]>(mockCliente);
 
     const addCliente = (cliente: Cliente) => {
+        if (clientes.length === 0) {
+            cliente.id = 1;
+        } else {
+            // @ts-ignore
+            cliente.id = clientes[clientes.length - 1].id + 1;
+        }
         setClientes([...clientes, cliente]);
     }
 
@@ -99,8 +105,12 @@ export const ClienteContextProvider = ({children}: {children: ReactNode}) => {
         return clientes.find(cliente => cliente.id === id);
     }
 
+    const getClientes = () => {
+        return clientes;
+    }
+
     return (
-        <ClienteContext.Provider value={{clientes, addCliente, removeCliente, updateCliente, getCliente}}>
+        <ClienteContext.Provider value={{clientes, addCliente, removeCliente, updateCliente, getCliente, getClientes}}>
             {children}
         </ClienteContext.Provider>
     );
