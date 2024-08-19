@@ -102,19 +102,9 @@ function CriaCliente() {
           required/>
         <Endereco
           title="Endereço de Entrega"
-          value={cliente.enderecoCobranca}
+          value={cliente.enderecoEntrega}
           onChange={handleChange}
           required/>
-        <Grid item xs={12} mb={2}>
-          <TextField
-            name="cartaoCredito"
-            label="Cartão de Crédito"
-            value={cliente.cartaoCredito}
-            onChange={handleChange}
-            required
-            fullWidth
-          />
-        </Grid>
         <CartoesCadastrados/>
         <CartaoDeCredito/>
 
