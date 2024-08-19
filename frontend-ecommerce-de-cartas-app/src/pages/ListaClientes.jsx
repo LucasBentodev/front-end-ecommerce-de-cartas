@@ -8,6 +8,7 @@ import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import {useNavigate} from "react-router-dom";
 
 const columns = [
   { field: 'id', headerName: 'ID', flex: 0.2 },
@@ -49,14 +50,11 @@ function ListaClientes() {
 
 export default ListaClientes;
 
-const options = [
-  'Editar',
-  'Excluir',
-];
 
 const ITEM_HEIGHT = 48;
 
 function MenuTresPontos({id}) {
+  const navigate = useNavigate();
   const {removeCliente} = useContext(ClienteContext);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -68,7 +66,7 @@ function MenuTresPontos({id}) {
     setAnchorEl(null);
   };
   const handleEdit = () => {
-    alert("Editado");
+    navigate(`/alterarcliente/${parseInt(id)}`);
     handleClose();
   }
   const handleDelete = () => {

@@ -7,15 +7,8 @@ type Cliente = {
     telefone: string;
     email: string;
     senha: string;
-    enderecoCobranca: {
-        rua: string;
-        numero: string;
-        bairro: string;
-        cidade: string;
-        pais: string;
-        cep: string;
-    };
-    enderecoEntrega: Endereco
+    enderecoCobranca: Endereco;
+    enderecoEntrega: Endereco;
     cartoes: Cartao[];
 };
 
@@ -29,12 +22,16 @@ type Cartao = {
 
 type Endereco = {
     id?: number;
-    rua: string;
+    tipoResidencia: string;
+    tipoLogradouro: string;
+    logradouro: string;
     numero: string;
     bairro: string;
-    cidade: string;
-    pais: string;
     cep: string;
+    cidade: string;
+    estado: string;
+    pais: string;
+    observacoes: string;
 };
 
 export const ClienteContext = createContext({});
@@ -43,40 +40,50 @@ export const ClienteContextProvider = ({children}: {children: ReactNode}) => {
 
     const mockCliente: Cliente[] = [{
         id: 1,
-        nome: "João Silva",
-        telefone: "123456789",
-        email: "joao.silva@example.com",
-        senha: "senhaSegura123",
+        nome: "Maria Oliveira",
+        telefone: "987654321",
+        email: "maria.oliveira@example.com",
+        senha: "senhaSegura456",
         enderecoCobranca: {
-            rua: "Rua das Flores",
-            numero: "123",
-            bairro: "Centro",
+            id: 1,
+            tipoResidencia: "Apartamento",
+            tipoLogradouro: "Avenida",
+            logradouro: "Avenida Paulista",
+            numero: "1000",
+            bairro: "Bela Vista",
+            cep: "01310-100",
             cidade: "São Paulo",
+            estado: "SP",
             pais: "Brasil",
-            cep: "12345-678",
+            observacoes: "Próximo ao MASP",
         },
         enderecoEntrega: {
-            rua: "Rua das Pedras",
-            numero: "456",
-            bairro: "Jardim",
+            id: 2,
+            tipoResidencia: "Casa",
+            tipoLogradouro: "Rua",
+            logradouro: "Rua das Acácias",
+            numero: "200",
+            bairro: "Jardim das Flores",
+            cep: "01420-200",
             cidade: "São Paulo",
+            estado: "SP",
             pais: "Brasil",
-            cep: "98765-432",
+            observacoes: "Casa com portão azul",
         },
         cartoes: [
             {
                 id: 1,
-                nomeCartao: "JOÃO SILVA",
-                numeroCartao: "1111 2222 3333 4444",
+                nomeCartao: "MARIA OLIVEIRA",
+                numeroCartao: "9999 8888 7777 6666",
                 bandeiraCartao: "Visa",
-                codigoDeSeguranca: "123",
+                codigoDeSeguranca: "789",
             },
             {
                 id: 2,
-                nomeCartao: "JOÃO SILVA",
-                numeroCartao: "5555 6666 7777 8888",
+                nomeCartao: "MARIA OLIVEIRA",
+                numeroCartao: "5555 4444 3333 2222",
                 bandeiraCartao: "Mastercard",
-                codigoDeSeguranca: "456",
+                codigoDeSeguranca: "012",
             },
         ],
     }];
@@ -95,14 +102,25 @@ export const ClienteContextProvider = ({children}: {children: ReactNode}) => {
 
     const removeCliente = (id: number) => {
         setClientes(clientes.filter(cliente => cliente.id !== id));
+        window.alert("Cliente removido com sucesso!");
     }
 
     const updateCliente = (id: number, cliente: Cliente) => {
-        setClientes(clientes.map(cliente => cliente.id === id ? cliente : cliente));
+        const index = clientes.findIndex(cliente => cliente.id == id);
+        const newClientes = [...clientes];
+        newClientes[index] = cliente;
+        setClientes(newClientes);
+        console.log(newClientes)
+        window.alert("Cliente atualizado com sucesso!");
     }
 
-    const getCliente = (id: number) => {
-        return clientes.find(cliente => cliente.id === id);
+    const getCliente = (id: string) => {
+        for (let i = 0; i < clientes.length; i++) {
+            if (clientes[i].id === parseInt(id)) {
+                return clientes[i];
+            }
+        }
+        return null; // Retorna null se o cliente não for encontrado
     }
 
     const getClientes = () => {

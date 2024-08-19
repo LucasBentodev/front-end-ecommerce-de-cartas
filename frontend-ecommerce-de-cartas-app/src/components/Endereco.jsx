@@ -3,19 +3,8 @@ import { Grid, TextField, Typography } from "@mui/material";
 import PropTypes from 'prop-types';
 import { useTheme } from '@mui/material/styles';
 
-function Endereco({ title }) {
-    const [endereco, setEndereco] = useState({
-        tipoResidencia: '',
-        tipoLogradouro: '',
-        logradouro: '',
-        numero: '',
-        bairro: '',
-        cep: '',
-        cidade: '',
-        estado: '',
-        pais: '',
-        observacoes: '',
-    });
+function Endereco({ title, value }) {
+    const [endereco, setEndereco] = useState(value);
 
     const theme = useTheme();
 
@@ -136,6 +125,7 @@ function Endereco({ title }) {
 
 Endereco.propTypes = {
     title: PropTypes.string.isRequired,
+    value: PropTypes.object.isRequired,
 };
 
 export default Endereco;

@@ -1,36 +1,20 @@
-import {useState} from "react";
+import {useContext, useState} from "react";
 import { Grid,TextField,Typography,Container,Button} from "@mui/material";
 import Endereco from "../components/Endereco";
 import CartaoDeCredito from "../components/CadastroCartao";
 import CartoesCadastrados from "../components/CartoesCadastrados";
 import { useTheme } from '@mui/material/styles';
+import {ClienteContext} from "../contexts/ClienteContext.tsx";
+import {useParams} from "react-router-dom";
 
 function AlterarCliente() {
-  const [cliente, setCliente] = useState({
-    nome: '',
-    telefone: '',
-    email: '',
-    senha: '',
-    enderecoCobranca: {
-      rua: '',
-      numero: '',
-      bairro: '',
-      cidade: '',
-      pais: '',
-      cep: '',
-    },
-    enderecoEntrega: {
-      rua: '',
-      numero: '',
-      bairro: '',
-      cidade: '',
-      pais: '',
-      cep: '',
-    }, 
-    cartaoCredito: '',
-  });
+  const {id} = useParams();
 
-  const handleChange = (event) => {
+  const {getCliente, updateCliente} = useContext(ClienteContext);
+
+  const [cliente, setCliente] = useState(getCliente(id));
+
+    const handleChange = (event) => {
     setCliente({
       ...cliente,
       [event.target.name]: event.target.value,
@@ -39,7 +23,7 @@ function AlterarCliente() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Aqui você pode lidar com a submissão do formulário, por exemplo, enviando os dados para uma API.
+    updateCliente(cliente.id, cliente);
   };
 
   const theme = useTheme();
@@ -101,16 +85,6 @@ function AlterarCliente() {
               value={cliente.enderecoCobranca}
               onChange={handleChange}
               required/>
-          <Grid item xs={12} mb={2}>
-            <TextField
-              name="cartaoCredito"
-              label="Cartão de Crédito"
-              value={cliente.cartaoCredito}
-              onChange={handleChange}
-              required
-              fullWidth
-            />
-          </Grid>
          <CartoesCadastrados/>
          <CartaoDeCredito/>
          

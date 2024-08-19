@@ -13,7 +13,8 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<ListaClientes />} />
           <Route path="/criacliente" element={<CriaCliente />} />
-          <Route path="/alterarcliente" element={<AlterarCliente />} />
+          <Route path="/listaclientes" element={<ListaClientes />} />
+          <Route path="/alterarcliente/:id" element={<AlterarCliente />} />
           <Route path="/inativarCliente" element={<InativarCliente/>}/>
           <Route path="/alterarSenha" element={<AlterarSenha/>}/>
         </Route>
