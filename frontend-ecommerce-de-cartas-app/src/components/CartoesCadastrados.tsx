@@ -2,6 +2,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import MenuTresPontos from './MenuTresPontos';
 import { useTheme } from '@mui/material/styles';
 import { Typography } from '@mui/material';
+import React from 'react';
 const columns = [
   { field: 'id', headerName: 'ID', flex: 0.2 },
   { field: 'nomeCartao', headerName: 'Nome impresso no Cartão', flex: 1 },
