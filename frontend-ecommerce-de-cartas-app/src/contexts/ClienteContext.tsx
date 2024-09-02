@@ -16,55 +16,6 @@
 
     export const ClienteContextProvider = ({children}: {children: ReactNode}) => {
 
-        /*const mockCliente: Cliente[] = [{
-            id: 1,
-            nome: "Maria Oliveira",
-            telefone: "987654321",
-            email: "maria.oliveira@example.com",
-            senha: "senhaSegura456",
-            enderecoCobranca: {
-                id: 1,
-                tipoResidencia: "Apartamento",
-                tipoLogradouro: "Avenida",
-                logradouro: "Avenida Paulista",
-                numero: "1000",
-                bairro: "Bela Vista",
-                cep: "01310-100",
-                cidade: "São Paulo",
-                estado: "SP",
-                pais: "Brasil",
-                observacoes: "Próximo ao MASP",
-            },
-            enderecoEntrega: {
-                id: 2,
-                tipoResidencia: "Casa",
-                tipoLogradouro: "Rua",
-                logradouro: "Rua das Acácias",
-                numero: "200",
-                bairro: "Jardim das Flores",
-                cep: "01420-200",
-                cidade: "São Paulo",
-                estado: "SP",
-                pais: "Brasil",
-                observacoes: "Casa com portão azul",
-            },
-            cartoes: [
-                {
-                    id: 1,
-                    nomeCartao: "MARIA OLIVEIRA",
-                    numeroCartao: "9999 8888 7777 6666",
-                    bandeiraCartao: "Visa",
-                    codigoDeSeguranca: "789",
-                },
-                {
-                    id: 2,
-                    nomeCartao: "MARIA OLIVEIRA",
-                    numeroCartao: "5555 4444 3333 2222",
-                    bandeiraCartao: "Mastercard",
-                    codigoDeSeguranca: "012",
-                },
-            ],
-        }];*/
         const navigate = useNavigate();
         const [clientes, setClientes] = useState<Cliente[]>([]);
 
