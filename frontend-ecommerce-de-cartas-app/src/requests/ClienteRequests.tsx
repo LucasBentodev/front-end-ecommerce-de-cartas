@@ -6,9 +6,12 @@ const baseURL = 'http://localhost:8080/clientes';
 export interface Cliente {
     id?: number;
     nome: string;
-    telefone: string;
+    telefone: Telefone;
     email: string;
     senha: string;
+    cpf: string;
+    genero: string;
+    ativo: boolean;
     enderecos: Endereco[];
     cartoes: Cartao[];
 }
@@ -37,7 +40,15 @@ export interface Cartao {
     cvv: string;
     validade: string;
     observacoes: string;
+    eCartaoPadra: boolean;
 }
+
+export interface Telefone{
+    tipo : string,
+    ddd : string,
+    numero:string, 
+};
+
 
 const clientAPI = axios.create({
     baseURL: baseURL,

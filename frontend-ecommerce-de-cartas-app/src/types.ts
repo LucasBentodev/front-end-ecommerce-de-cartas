@@ -1,9 +1,12 @@
 type Cliente = {
     id?: number;
     nome: string;
-    telefone: string;
+    telefone: Telefone;
     email: string;
     senha: string;
+    cpf: string;
+    genero: string;
+    ativo: boolean;
     enderecos: Endereco[];
     cartoes: Cartao[];
 };
@@ -16,6 +19,7 @@ type Cartao = {
     cvv: string;
     validade: string;
     observacoes: string;
+    eCartaoPadra: boolean;
 };
 
 type Endereco = {
@@ -32,4 +36,10 @@ type Endereco = {
     observacoes:string,
     enderecoCobranca: boolean,
     enderecoEntregaPadrao:boolean,
+};
+
+type Telefone = {
+    tipo : string,
+    ddd : string,
+    numero:string, 
 };
