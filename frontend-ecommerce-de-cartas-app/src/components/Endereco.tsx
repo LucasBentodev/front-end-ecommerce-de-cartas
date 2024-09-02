@@ -20,7 +20,6 @@ function Endereco({ index, endereco, onEnderecoChange }: EnderecoProps) {
         const { name, value } = event.target;
         setLocalEndereco(prev => {
             const updatedEndereco = { ...prev, [name]: value };
-            console.log(`Endereço atualizado para índice ${index}:`, updatedEndereco);
             onEnderecoChange(index, updatedEndereco);
             return updatedEndereco;
         });

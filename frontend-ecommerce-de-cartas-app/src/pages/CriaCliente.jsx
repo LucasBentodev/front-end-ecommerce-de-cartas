@@ -52,7 +52,6 @@ function CriaCliente() {
   const handleEnderecoChange = (enderecoIndex, endereco) => {
     const updatedEnderecos = [...cliente.enderecos];
     updatedEnderecos[enderecoIndex] = endereco;
-    console.log(updatedEnderecos);
     setCliente(prevState => ({
       ...prevState,
       enderecos: updatedEnderecos,
