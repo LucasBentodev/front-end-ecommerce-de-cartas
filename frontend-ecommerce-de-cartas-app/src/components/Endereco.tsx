@@ -1,50 +1,72 @@
-import { useState } from "react";
-import { Grid, TextField, Typography } from "@mui/material";
+import { useState, useEffect } from "react";
+import { Grid, TextField, Typography, FormControl, InputLabel, Select, MenuItem, SelectChangeEvent } from "@mui/material";
 import PropTypes from 'prop-types';
 import { useTheme } from '@mui/material/styles';
 import React from "react";
+import { Endereco as EnderecoType } from '../requests/ClienteRequests';
 
-function Endereco({ title, value }: { title: string, value: Endereco }) {
-    const [endereco, setEndereco] = useState(value);
+interface EnderecoProps {
+    index: number;
+    endereco: EnderecoType;
+    onEnderecoChange: (index: number, endereco: EnderecoType) => void;
+}
+
+function Endereco({ index, endereco, onEnderecoChange }: EnderecoProps) {
+    const [localEndereco, setLocalEndereco] = useState(endereco);
 
     const theme = useTheme();
 
-    const handleChange = (event: { target: { name: string; value: string; }; }) => {
-        setEndereco({
-            ...endereco,
-            [event.target.name]: event.target.value,
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = event.target;
+        setLocalEndereco(prev => {
+            const updatedEndereco = { ...prev, [name]: value };
+            console.log(`Endereço atualizado para índice ${index}:`, updatedEndereco);
+            onEnderecoChange(index, updatedEndereco);
+            return updatedEndereco;
         });
     };
 
+    const handleTipoChange = (event: SelectChangeEvent<string>) => {
+        const tipo = event.target.value;
+        setLocalEndereco(prev => {
+            const updatedEndereco = { ...prev, tipoLogradouro: tipo };
+            onEnderecoChange(index, updatedEndereco);
+            return updatedEndereco;
+        });
+    };
     return (
         <>
-            <Typography variant="h6" style={{ color: theme.palette.text.primary }} mb={1}>{title}</Typography>
+            <Typography variant="h6" style={{ color: theme.palette.text.primary }} mb={1}>Endereço {index + 1}</Typography>
             <Grid container spacing={2} mb={2}>
                 <Grid item xs={12} sm={6}>
                     <TextField
                         name="tipoResidencia"
                         label="Tipo de Residência"
-                        value={endereco.tipoResidencia}
+                        value={localEndereco.tipoResidencia}
                         onChange={handleChange}
                         required
                         fullWidth
                     />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                    <TextField
-                        name="tipoLogradouro"
-                        label="Tipo de Logradouro"
-                        value={endereco.tipoLogradouro}
-                        onChange={handleChange}
-                        required
-                        fullWidth
-                    />
+                    <FormControl fullWidth required>
+                        <InputLabel id="tipo-logradouro-label">Tipo de Logradouro</InputLabel>
+                        <Select
+                            labelId="tipo-logradouro-label"
+                            value={localEndereco.tipoLogradouro}
+                            onChange={handleTipoChange}
+                            label="Tipo de Logradouro"
+                        >
+                            <MenuItem value="Entrega">Entrega</MenuItem>
+                            <MenuItem value="Cobrança">Cobrança</MenuItem>
+                        </Select>
+                    </FormControl>
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <TextField
                         name="logradouro"
                         label="Logradouro"
-                        value={endereco.logradouro}
+                        value={localEndereco.logradouro}
                         onChange={handleChange}
                         required
                         fullWidth
@@ -54,7 +76,7 @@ function Endereco({ title, value }: { title: string, value: Endereco }) {
                     <TextField
                         name="numero"
                         label="Número"
-                        value={endereco.numero}
+                        value={localEndereco.numero}
                         onChange={handleChange}
                         required
                         fullWidth
@@ -64,7 +86,7 @@ function Endereco({ title, value }: { title: string, value: Endereco }) {
                     <TextField
                         name="bairro"
                         label="Bairro"
-                        value={endereco.bairro}
+                        value={localEndereco.bairro}
                         onChange={handleChange}
                         required
                         fullWidth
@@ -74,7 +96,7 @@ function Endereco({ title, value }: { title: string, value: Endereco }) {
                     <TextField
                         name="cep"
                         label="CEP"
-                        value={endereco.cep}
+                        value={localEndereco.cep}
                         onChange={handleChange}
                         required
                         fullWidth
@@ -84,7 +106,7 @@ function Endereco({ title, value }: { title: string, value: Endereco }) {
                     <TextField
                         name="cidade"
                         label="Cidade"
-                        value={endereco.cidade}
+                        value={localEndereco.cidade}
                         onChange={handleChange}
                         required
                         fullWidth
@@ -94,7 +116,7 @@ function Endereco({ title, value }: { title: string, value: Endereco }) {
                     <TextField
                         name="estado"
                         label="Estado"
-                        value={endereco.estado}
+                        value={localEndereco.estado}
                         onChange={handleChange}
                         required
                         fullWidth
@@ -104,7 +126,7 @@ function Endereco({ title, value }: { title: string, value: Endereco }) {
                     <TextField
                         name="pais"
                         label="País"
-                        value={endereco.pais}
+                        value={localEndereco.pais}
                         onChange={handleChange}
                         required
                         fullWidth
@@ -114,7 +136,7 @@ function Endereco({ title, value }: { title: string, value: Endereco }) {
                     <TextField
                         name="observacoes"
                         label="Observações"
-                        value={endereco.observacoes}
+                        value={localEndereco.observacoes}
                         onChange={handleChange}
                         fullWidth
                     />
@@ -125,8 +147,9 @@ function Endereco({ title, value }: { title: string, value: Endereco }) {
 }
 
 Endereco.propTypes = {
-    title: PropTypes.string.isRequired,
-    value: PropTypes.object.isRequired,
+    index: PropTypes.number.isRequired,
+    endereco: PropTypes.object.isRequired,
+    onEnderecoChange: PropTypes.func.isRequired,
 };
 
 export default Endereco;

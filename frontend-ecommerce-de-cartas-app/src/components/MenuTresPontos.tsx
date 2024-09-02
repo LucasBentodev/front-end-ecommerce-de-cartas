@@ -6,6 +6,8 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 const options = [
   'Editar',
+  'Alterar Endereco',
+  'Alterar Senha',
   'Excluir',
 ];
 

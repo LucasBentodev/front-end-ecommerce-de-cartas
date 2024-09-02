@@ -1,104 +1,140 @@
-import * as React from "react";
-import {createContext, ReactNode, useState} from "react";
+    import * as React from "react";
+    import {createContext, ReactNode, useState} from "react";
+    import { addClienteAPI, deleteClienteApi, getClienteAPI, getClientesAPI, updateClienteApi } from "../requests/ClienteRequests";
+    import { useNavigate } from 'react-router-dom';
 
-export const ClienteContext = createContext({});
+    interface ClienteContextType {
+        clientes: Cliente[];
+        addCliente: (cliente: Cliente) => Promise<void>;
+        removeCliente: (id: number) => void;
+        updateCliente: (cliente: Cliente) => void;
+        getCliente: (id: number) => Promise<Cliente>;
+        getClientes: () => Promise<Cliente[]>;
+    }
 
-export const ClienteContextProvider = ({children}: {children: ReactNode}) => {
+    export const ClienteContext = createContext<ClienteContextType | undefined>(undefined);
 
-    const mockCliente: Cliente[] = [{
-        id: 1,
-        nome: "Maria Oliveira",
-        telefone: "987654321",
-        email: "maria.oliveira@example.com",
-        senha: "senhaSegura456",
-        enderecoCobranca: {
+    export const ClienteContextProvider = ({children}: {children: ReactNode}) => {
+
+        /*const mockCliente: Cliente[] = [{
             id: 1,
-            tipoResidencia: "Apartamento",
-            tipoLogradouro: "Avenida",
-            logradouro: "Avenida Paulista",
-            numero: "1000",
-            bairro: "Bela Vista",
-            cep: "01310-100",
-            cidade: "São Paulo",
-            estado: "SP",
-            pais: "Brasil",
-            observacoes: "Próximo ao MASP",
-        },
-        enderecoEntrega: {
-            id: 2,
-            tipoResidencia: "Casa",
-            tipoLogradouro: "Rua",
-            logradouro: "Rua das Acácias",
-            numero: "200",
-            bairro: "Jardim das Flores",
-            cep: "01420-200",
-            cidade: "São Paulo",
-            estado: "SP",
-            pais: "Brasil",
-            observacoes: "Casa com portão azul",
-        },
-        cartoes: [
-            {
+            nome: "Maria Oliveira",
+            telefone: "987654321",
+            email: "maria.oliveira@example.com",
+            senha: "senhaSegura456",
+            enderecoCobranca: {
                 id: 1,
-                nomeCartao: "MARIA OLIVEIRA",
-                numeroCartao: "9999 8888 7777 6666",
-                bandeiraCartao: "Visa",
-                codigoDeSeguranca: "789",
+                tipoResidencia: "Apartamento",
+                tipoLogradouro: "Avenida",
+                logradouro: "Avenida Paulista",
+                numero: "1000",
+                bairro: "Bela Vista",
+                cep: "01310-100",
+                cidade: "São Paulo",
+                estado: "SP",
+                pais: "Brasil",
+                observacoes: "Próximo ao MASP",
             },
-            {
+            enderecoEntrega: {
                 id: 2,
-                nomeCartao: "MARIA OLIVEIRA",
-                numeroCartao: "5555 4444 3333 2222",
-                bandeiraCartao: "Mastercard",
-                codigoDeSeguranca: "012",
+                tipoResidencia: "Casa",
+                tipoLogradouro: "Rua",
+                logradouro: "Rua das Acácias",
+                numero: "200",
+                bairro: "Jardim das Flores",
+                cep: "01420-200",
+                cidade: "São Paulo",
+                estado: "SP",
+                pais: "Brasil",
+                observacoes: "Casa com portão azul",
             },
-        ],
-    }];
+            cartoes: [
+                {
+                    id: 1,
+                    nomeCartao: "MARIA OLIVEIRA",
+                    numeroCartao: "9999 8888 7777 6666",
+                    bandeiraCartao: "Visa",
+                    codigoDeSeguranca: "789",
+                },
+                {
+                    id: 2,
+                    nomeCartao: "MARIA OLIVEIRA",
+                    numeroCartao: "5555 4444 3333 2222",
+                    bandeiraCartao: "Mastercard",
+                    codigoDeSeguranca: "012",
+                },
+            ],
+        }];*/
+        const navigate = useNavigate();
+        const [clientes, setClientes] = useState<Cliente[]>([]);
 
-    const [clientes, setClientes] = useState<Cliente[]>(mockCliente);
-
-    const addCliente = (cliente: Cliente) => {
-        if (clientes.length === 0) {
-            cliente.id = 1;
-        } else {
-            // @ts-ignore
-            cliente.id = clientes[clientes.length - 1].id + 1;
+        const addCliente = async (cliente: Cliente) => {
+        try {
+                const novoCliente = await addClienteAPI(cliente);
+                setClientes([...clientes, novoCliente]);
+                window.alert("Cliente cadastrado com sucesso");
+                setTimeout(() => {
+                    navigate('/listaclientes');
+                }, 2000);
+                
+        }catch(error){
+                console.error('Erro ao salvar cliente',error)
+        };
         }
-        setClientes([...clientes, cliente]);
-    }
 
-    const removeCliente = (id: number) => {
-        setClientes(clientes.filter(cliente => cliente.id !== id));
-        window.alert("Cliente removido com sucesso!");
-    }
 
-    const updateCliente = (id: number, cliente: Cliente) => {
-        const index = clientes.findIndex(cliente => cliente.id == id);
-        const newClientes = [...clientes];
-        newClientes[index] = cliente;
-        setClientes(newClientes);
-        console.log(newClientes)
-        window.alert("Cliente atualizado com sucesso!");
-    }
+        const updateCliente = async (cliente: Cliente) => {
+            try {
+                const updatedCliente = await updateClienteApi(cliente);
+                setClientes([...clientes, updatedCliente]);
+                window.alert("Cadastro atualizado com sucesso");
+                setTimeout(() => {
+                    navigate('/listaclientes');
+                }, 2000);
+                
+        }catch(error){
+                console.error('Erro ao salvar cliente',error)
+            };
+        }
 
-    const getCliente = (id: string) => {
-        for (let i = 0; i < clientes.length; i++) {
-            if (clientes[i].id === parseInt(id)) {
-                return clientes[i];
+        const removeCliente = async (id : number) => {
+            try {
+                const deleteCliente = await deleteClienteApi(id);
+                window.alert("Cliente deletado com sucesso");
+                setTimeout(() => {
+                    navigate('/listaclientes');
+                }, 2000);
+                
+        }catch(error){
+                console.error('Erro ao salvar cliente',error)
+            };
+        }
+
+        const getCliente = async(id : number)=> {
+            try{
+                const cliente = await getClienteAPI(id);
+                return cliente;
+            }catch(error){
+                console.error('Erro ao buscar clientes:', error);
+                throw error;
             }
-        }
-        return null; // Retorna null se o cliente não for encontrado
-    }
+        };
 
-    const getClientes = () => {
-        return clientes;
-    }
+        const getClientes = async (): Promise<Cliente[]> => {
+            try {
+                const listaclientes = await getClientesAPI(); // Chama a API sem parâmetros
+                return listaclientes;
+            } catch (error) {
+                console.error('Erro ao buscar clientes:', error);
+                throw error;
+            }
+        };
 
-    return (
-        <ClienteContext.Provider value={{clientes, addCliente, removeCliente, updateCliente, getCliente, getClientes}}>
-            {children}
-        </ClienteContext.Provider>
-    );
-};
+        return (
+            <ClienteContext.Provider value={{clientes, addCliente, removeCliente, updateCliente, getCliente, getClientes}}>
+                {children}
+            </ClienteContext.Provider>
+        );
+    };
 
 

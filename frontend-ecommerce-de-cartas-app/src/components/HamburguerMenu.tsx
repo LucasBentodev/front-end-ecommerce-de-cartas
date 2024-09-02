@@ -13,10 +13,7 @@ export default function HamburgerMenu() {
 
   const menuItems = [
     { text: 'Início', to: '/'},
-    { text: 'Criar Cliente', to: '/criacliente'},
-    { text: 'Alterar Cliente', to: '/alterarcliente'},
-    { text: 'Inativar Cliente', to: '/inativarCliente'},
-    { text: 'Alterar Senha', to: '/alterarSenha'} 
+    { text: 'Criar Cliente', to: '/criacliente'}, 
   ];
 
   return (

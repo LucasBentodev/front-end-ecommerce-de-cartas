@@ -6,6 +6,7 @@ import InativarCliente from './pages/InativarCliente.jsx';
 import AlterarSenha from './pages/AlterarSenha.jsx';
 import ListaClientes from "./pages/ListaClientes.jsx";
 import {ClienteContextProvider} from "./contexts/ClienteContext.tsx";
+import AlterarEndereco from './pages/AlterarEndereco.jsx';
 function App() {
   return (
     <Router>
@@ -16,7 +17,8 @@ function App() {
           <Route path="/listaclientes" element={<ListaClientes />} />
           <Route path="/alterarcliente/:id" element={<AlterarCliente />} />
           <Route path="/inativarCliente" element={<InativarCliente/>}/>
-          <Route path="/alterarSenha" element={<AlterarSenha/>}/>
+          <Route path="/alterarSenha/:id" element={<AlterarSenha/>}/>
+          <Route path="/alterarEndereco/:id" element={<AlterarEndereco/>}/>
         </Route>
       </Routes>
     </Router>

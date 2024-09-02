@@ -1,8 +1,7 @@
 import {useContext, useState} from "react";
 import { Grid,TextField,Typography,Container,Button} from "@mui/material";
 import Endereco from "../components/Endereco.tsx";
-import CartaoDeCredito from "../components/CadastroCartao";
-import CartoesCadastrados from "../components/CartoesCadastrados";
+import Cartao from "../components/Cartao.tsx"
 import { useTheme } from '@mui/material/styles';
 import {ClienteContext} from "../contexts/ClienteContext.tsx";
 
@@ -15,23 +14,32 @@ function CriaCliente() {
     telefone: '',
     email: '',
     senha: '',
-    enderecoCobranca: {
-      rua: '',
-      numero: '',
-      bairro: '',
-      cidade: '',
-      pais: '',
-      cep: '',
-    },
-    enderecoEntrega: {
-      rua: '',
-      numero: '',
-      bairro: '',
-      cidade: '',
-      pais: '',
-      cep: '',
-    },
-    cartaoCredito: '',
+    enderecos: [
+      {
+        tipoResidencia: '', 
+        tipLogradouro: '',
+        logradouro: '',
+        numero: '',
+        bairro: '',
+        cep: '',
+        cidade: '',
+        estado: '',
+        pais: '',
+        observacoes: '',
+        enderecoCobranca: '',
+        enderecoEntregaPadrao: '',
+      },
+    ],  
+    cartoes: [
+      {
+        numero:'',
+        nomeImpresso:'',
+        bandeira:'',
+        cvv:'',
+        validade:'',
+        observacoes:'',
+      },
+    ],
   });
 
   const handleChange = (event) => {
@@ -39,6 +47,59 @@ function CriaCliente() {
       ...cliente,
       [event.target.name]: event.target.value,
     });
+  };
+  
+  const handleEnderecoChange = (enderecoIndex, endereco) => {
+    const updatedEnderecos = [...cliente.enderecos];
+    updatedEnderecos[enderecoIndex] = endereco;
+    console.log(updatedEnderecos);
+    setCliente(prevState => ({
+      ...prevState,
+      enderecos: updatedEnderecos,
+    }));
+  };
+
+  const handleAddEndereco = () => {
+    setCliente(prevState => ({
+      ...prevState,
+      enderecos: [...prevState.enderecos, {
+        tipoResidencia: '', 
+        tipLogradouro: '',
+        logradouro: '',
+        numero: '',
+        bairro: '',
+        cep: '',
+        cidade: '',
+        estado: '',
+        pais: '',
+        observacoes: '',
+        enderecoCobranca: '',
+        enderecoEntregaPadrao: '',
+      }]
+    }));
+  };
+
+  const handleCartaoChange = (cartaoIndex, cartao) => {
+    const updatedCartoes = [...cliente.cartoes];
+    updatedCartoes[cartaoIndex] = cartao;
+    setCliente(prevState => ({
+      ...prevState,
+      cartoes: updatedCartoes,
+    }));
+  };
+
+  const handleAddCartao = () => {
+    setCliente(prevState => ({
+      ...prevState,
+      cartoes: [...prevState.cartoes, {
+        numero:'',
+        nomeImpresso:'',
+        bandeira:'',
+        cvv:'',
+        validade:'',
+        observacoes:'',
+      }]
+    }));
   };
 
   const handleSubmit = (event) => {
@@ -95,19 +156,40 @@ function CriaCliente() {
             fullWidth
           />
         </Grid>
-        <Endereco
-          title="Endereço de Cobrança"
-          value={cliente.enderecoCobranca}
-          onChange={handleChange}
-          required/>
-        <Endereco
-          title="Endereço de Entrega"
-          value={cliente.enderecoEntrega}
-          onChange={handleChange}
-          required/>
-        <CartoesCadastrados/>
-        <CartaoDeCredito/>
-
+        {cliente.enderecos.map((endereco, index) => (
+                <Endereco
+                    key={index}
+                    index={index}
+                    endereco={endereco}
+                    onEnderecoChange={handleEnderecoChange}
+                />
+            ))}
+        <Grid item xs={12} mb={2}>
+          <Button
+            variant="contained"
+            onClick={handleAddEndereco}
+            sx={{ mt: 2, mb: 2 }}
+          >
+            Adicionar Endereço
+          </Button>
+        </Grid>
+        {cliente.cartoes.map((cartao, index) => (
+                <Cartao
+                    key={index}
+                    index={index}
+                    cartao={cartao}
+                    onCartaoChange={handleCartaoChange}    
+                  />
+              ))}
+         <Grid item xs={12} mb={2}>
+          <Button
+            variant="contained"
+            onClick={handleAddCartao}
+            sx={{ mt: 2, mb: 2 }}
+          >
+            Adicionar Cartão
+          </Button>
+        </Grid>            
         <Grid item xs={12}>
           <Grid container justifyContent="center">
             <Button variant="contained" type="submit" size="large"  sx={{ mt: 2,mb: 2 }}>

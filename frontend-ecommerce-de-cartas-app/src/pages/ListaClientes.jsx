@@ -1,5 +1,5 @@
 import * as React from "react";
-import {useContext} from "react";
+import {useContext, useState,useEffect} from "react";
 import {ClienteContext} from "../contexts/ClienteContext.tsx";
 import {Typography} from "@mui/material";
 import {DataGrid} from "@mui/x-data-grid";
@@ -9,6 +9,8 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import {useNavigate} from "react-router-dom";
+import PropTypes from 'prop-types';
+
 
 const columns = [
   { field: 'id', headerName: 'ID', flex: 0.2 },
@@ -26,15 +28,28 @@ const columns = [
 
 function ListaClientes() {
   const theme = useTheme();
-
   const {getClientes} = useContext(ClienteContext);
+  const [clientes, setClientes] = useState([]);
+  useEffect(() => {
+    const fetchClientes = async () => {
+      try {
+        const clienteData = await getClientes(); // Chama a função para buscar os clientes
+        setClientes(clienteData);
+      } catch (error) {
+        console.error('Erro ao buscar clientes:', error);
+      }
+    };
 
+    fetchClientes();
+  }, [getClientes]);
+
+ 
 
   return (
     <div style={{width: '100%'}}>
       <Typography variant="h6" style={{color: theme.palette.text.primary}} mb={1}>Clientes Cadastrados</Typography>
       <DataGrid
-        rows={getClientes()}
+        rows={clientes}
         columns={columns}
         initialState={{
           pagination: {
@@ -67,6 +82,15 @@ function MenuTresPontos({id}) {
   };
   const handleEdit = () => {
     navigate(`/alterarcliente/${parseInt(id)}`);
+    handleClose();
+  }
+  const handleEditEndereco = () => {
+    navigate(`/alterarEndereco/${parseInt(id)}`);
+    handleClose();
+  }
+
+  const handleEditSenha = () => {
+    navigate(`/alterarSenha/${parseInt(id)}`);
     handleClose();
   }
   const handleDelete = () => {
@@ -104,6 +128,12 @@ function MenuTresPontos({id}) {
         <MenuItem key={"Editar"} selected={"Editar" === 'Pyxis'} onClick={handleEdit}>
           {"Editar"}
         </MenuItem>
+        <MenuItem key={"Excluir"} selected={"Excluir" === 'Pyxis'} onClick={handleEditEndereco}>
+          {"Editar Endereço"}
+        </MenuItem>
+        <MenuItem key={"Excluir"} selected={"Excluir" === 'Pyxis'} onClick={handleEditSenha}>
+          {"Editar Senha"}
+        </MenuItem>
         <MenuItem key={"Excluir"} selected={"Excluir" === 'Pyxis'} onClick={handleDelete}>
           {"Excluir"}
         </MenuItem>
@@ -112,3 +142,7 @@ function MenuTresPontos({id}) {
 )
   ;
 }
+
+MenuTresPontos.propTypes = {
+  id: PropTypes.number.isRequired,
+};
