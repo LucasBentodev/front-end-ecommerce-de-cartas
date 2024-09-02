@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { Grid, TextField, Typography, FormControl, InputLabel, Select, MenuItem, SelectChangeEvent } from "@mui/material";
+import { useState } from "react";
+import { Grid, TextField, Typography, FormControl, InputLabel, Select, MenuItem, SelectChangeEvent, Checkbox, FormControlLabel } from "@mui/material";
 import PropTypes from 'prop-types';
 import { useTheme } from '@mui/material/styles';
 import React from "react";
@@ -17,9 +17,10 @@ function Endereco({ index, endereco, onEnderecoChange }: EnderecoProps) {
     const theme = useTheme();
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = event.target;
+        const { name, value, type, checked } = event.target;
+        const newValue = type === 'checkbox' ? checked : value;
         setLocalEndereco(prev => {
-            const updatedEndereco = { ...prev, [name]: value };
+            const updatedEndereco = { ...prev, [name]: newValue };
             onEnderecoChange(index, updatedEndereco);
             return updatedEndereco;
         });
@@ -33,6 +34,7 @@ function Endereco({ index, endereco, onEnderecoChange }: EnderecoProps) {
             return updatedEndereco;
         });
     };
+
     return (
         <>
             <Typography variant="h6" style={{ color: theme.palette.text.primary }} mb={1}>Endereço {index + 1}</Typography>
@@ -138,6 +140,30 @@ function Endereco({ index, endereco, onEnderecoChange }: EnderecoProps) {
                         value={localEndereco.observacoes}
                         onChange={handleChange}
                         fullWidth
+                    />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={localEndereco.eEnderecoCobranca}
+                                onChange={handleChange}
+                                name="eEnderecoCobranca"
+                            />
+                        }
+                        label="Endereço de Cobrança"
+                    />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={localEndereco.eEnderecoEntregaPadrao}
+                                onChange={handleChange}
+                                name="eEnderecoEntregaPadrao"
+                            />
+                        }
+                        label="Endereço de Entrega Padrão"
                     />
                 </Grid>
             </Grid>

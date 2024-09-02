@@ -6,30 +6,27 @@ const baseURL = 'http://localhost:8080/clientes';
 export interface Cliente {
     id?: number;
     nome: string;
-    telefone: Telefone;
+    telefone: string;
     email: string;
     senha: string;
-    cpf: string;
-    genero: string;
-    ativo: boolean;
     enderecos: Endereco[];
     cartoes: Cartao[];
 }
 
 export interface Endereco {
     id?: number;
-    tipoResidencia:string, 
-    tipoLogradouro:string,
-    logradouro:string,
-    numero: string,
-    bairro: string,
-    cep: string,
-    cidade: string,
-    estado: string,
-    pais:string,
-    observacoes:string,
-    enderecoCobranca: boolean,
-    enderecoEntregaPadrao:boolean,
+    tipoResidencia: string;
+    tipoLogradouro: string;
+    logradouro: string;
+    numero: string;
+    bairro: string;
+    cep: string;
+    cidade: string;
+    estado: string;
+    pais: string;
+    observacoes: string;
+    eEnderecoCobranca: boolean;
+    eEnderecoEntregaPadrao: boolean;
 }
 
 export interface Cartao {
@@ -40,13 +37,13 @@ export interface Cartao {
     cvv: string;
     validade: string;
     observacoes: string;
-    eCartaoPadra: boolean;
+    eCartaoPadrao: boolean;
 }
 
 export interface Telefone{
     tipo : string,
     ddd : string,
-    numero:string, 
+    numero:string,
 };
 
 

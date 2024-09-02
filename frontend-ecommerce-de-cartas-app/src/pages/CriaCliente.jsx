@@ -1,23 +1,29 @@
-import {useContext, useState} from "react";
-import { Grid,TextField,Typography,Container,Button} from "@mui/material";
+import { useContext, useState } from "react";
+import { Grid, TextField, Typography, Container, Button } from "@mui/material";
 import Endereco from "../components/Endereco.tsx";
-import Cartao from "../components/Cartao.tsx"
+import Cartao from "../components/Cartao.tsx";
 import { useTheme } from '@mui/material/styles';
-import {ClienteContext} from "../contexts/ClienteContext.tsx";
+import { ClienteContext } from "../contexts/ClienteContext.tsx";
 
 function CriaCliente() {
-  const {addCliente} = useContext(ClienteContext);
-
+  const { addCliente } = useContext(ClienteContext);
 
   const [cliente, setCliente] = useState({
     nome: '',
-    telefone: '',
+    telefone: {
+      tipo: '',
+      ddd: '',
+      numero: ''
+    },
     email: '',
     senha: '',
+    cpf: '',
+    genero: '',
+    ativo: true,
     enderecos: [
       {
-        tipoResidencia: '', 
-        tipLogradouro: '',
+        tipoResidencia: '',
+        tipoLogradouro: '',
         logradouro: '',
         numero: '',
         bairro: '',
@@ -26,78 +32,98 @@ function CriaCliente() {
         estado: '',
         pais: '',
         observacoes: '',
-        enderecoCobranca: '',
-        enderecoEntregaPadrao: '',
+        eEnderecoCobranca: false,
+        eEnderecoEntregaPadrao: false,
       },
-    ],  
+    ],
     cartoes: [
       {
-        numero:'',
-        nomeImpresso:'',
-        bandeira:'',
-        cvv:'',
-        validade:'',
-        observacoes:'',
+        numero: '',
+        nomeImpresso: '',
+        bandeira: '',
+        cvv: '',
+        validade: '',
+        observacoes: '',
+        eCartaoPadrao: false,
       },
     ],
   });
 
   const handleChange = (event) => {
-    setCliente({
-      ...cliente,
-      [event.target.name]: event.target.value,
-    });
+    const { name, value } = event.target;
+    setCliente((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
   };
-  
+
+  const handleTelefoneChange = (event) => {
+    const { name, value } = event.target;
+    setCliente((prevState) => ({
+      ...prevState,
+      telefone: {
+        ...prevState.telefone,
+        [name]: value,
+      },
+    }));
+  };
+
   const handleEnderecoChange = (enderecoIndex, endereco) => {
     const updatedEnderecos = [...cliente.enderecos];
     updatedEnderecos[enderecoIndex] = endereco;
-    setCliente(prevState => ({
+    setCliente((prevState) => ({
       ...prevState,
       enderecos: updatedEnderecos,
     }));
   };
 
   const handleAddEndereco = () => {
-    setCliente(prevState => ({
+    setCliente((prevState) => ({
       ...prevState,
-      enderecos: [...prevState.enderecos, {
-        tipoResidencia: '', 
-        tipLogradouro: '',
-        logradouro: '',
-        numero: '',
-        bairro: '',
-        cep: '',
-        cidade: '',
-        estado: '',
-        pais: '',
-        observacoes: '',
-        enderecoCobranca: '',
-        enderecoEntregaPadrao: '',
-      }]
+      enderecos: [
+        ...prevState.enderecos,
+        {
+          tipoResidencia: '',
+          tipoLogradouro: '',
+          logradouro: '',
+          numero: '',
+          bairro: '',
+          cep: '',
+          cidade: '',
+          estado: '',
+          pais: '',
+          observacoes: '',
+          eEnderecoCobranca: false,
+          eEnderecoEntregaPadrao: false,
+        },
+      ],
     }));
   };
 
   const handleCartaoChange = (cartaoIndex, cartao) => {
     const updatedCartoes = [...cliente.cartoes];
     updatedCartoes[cartaoIndex] = cartao;
-    setCliente(prevState => ({
+    setCliente((prevState) => ({
       ...prevState,
       cartoes: updatedCartoes,
     }));
   };
 
   const handleAddCartao = () => {
-    setCliente(prevState => ({
+    setCliente((prevState) => ({
       ...prevState,
-      cartoes: [...prevState.cartoes, {
-        numero:'',
-        nomeImpresso:'',
-        bandeira:'',
-        cvv:'',
-        validade:'',
-        observacoes:'',
-      }]
+      cartoes: [
+        ...prevState.cartoes,
+        {
+          numero: '',
+          nomeImpresso: '',
+          bandeira: '',
+          cvv: '',
+          validade: '',
+          observacoes: '',
+          eCartaoPadrao: false,
+        },
+      ],
     }));
   };
 
@@ -111,7 +137,9 @@ function CriaCliente() {
   return (
     <Container>
       <Grid item xs={12}>
-        <Typography variant="h5" align="center" style={{ color: theme.palette.text.primary }} mt={4} mb={4} >Criar Cliente</Typography>
+        <Typography variant="h5" align="center" style={{ color: theme.palette.text.primary }} mt={4} mb={4}>
+          Criar Cliente
+        </Typography>
       </Grid>
       <form onSubmit={handleSubmit}>
         <Grid item xs={12} mb={2}>
@@ -126,10 +154,30 @@ function CriaCliente() {
         </Grid>
         <Grid item xs={12} mb={2}>
           <TextField
-            name="telefone"
-            label="Telefone"
-            value={cliente.telefone}
-            onChange={handleChange}
+            name="tipo"
+            label="Tipo de Telefone"
+            value={cliente.telefone.tipo}
+            onChange={handleTelefoneChange}
+            required
+            fullWidth
+          />
+        </Grid>
+        <Grid item xs={12} mb={2}>
+          <TextField
+            name="ddd"
+            label="DDD"
+            value={cliente.telefone.ddd}
+            onChange={handleTelefoneChange}
+            required
+            fullWidth
+          />
+        </Grid>
+        <Grid item xs={12} mb={2}>
+          <TextField
+            name="numero"
+            label="Número de Telefone"
+            value={cliente.telefone.numero}
+            onChange={handleTelefoneChange}
             required
             fullWidth
           />
@@ -155,14 +203,34 @@ function CriaCliente() {
             fullWidth
           />
         </Grid>
+        <Grid item xs={12} mb={2}>
+          <TextField
+            name="cpf"
+            label="CPF"
+            value={cliente.cpf}
+            onChange={handleChange}
+            required
+            fullWidth
+          />
+        </Grid>
+        <Grid item xs={12} mb={2}>
+          <TextField
+            name="genero"
+            label="Gênero"
+            value={cliente.genero}
+            onChange={handleChange}
+            required
+            fullWidth
+          />
+        </Grid>
         {cliente.enderecos.map((endereco, index) => (
-                <Endereco
-                    key={index}
-                    index={index}
-                    endereco={endereco}
-                    onEnderecoChange={handleEnderecoChange}
-                />
-            ))}
+          <Endereco
+            key={index}
+            index={index}
+            endereco={endereco}
+            onEnderecoChange={handleEnderecoChange}
+          />
+        ))}
         <Grid item xs={12} mb={2}>
           <Button
             variant="contained"
@@ -173,14 +241,14 @@ function CriaCliente() {
           </Button>
         </Grid>
         {cliente.cartoes.map((cartao, index) => (
-                <Cartao
-                    key={index}
-                    index={index}
-                    cartao={cartao}
-                    onCartaoChange={handleCartaoChange}    
-                  />
-              ))}
-         <Grid item xs={12} mb={2}>
+          <Cartao
+            key={index}
+            index={index}
+            cartao={cartao}
+            onCartaoChange={handleCartaoChange}
+          />
+        ))}
+        <Grid item xs={12} mb={2}>
           <Button
             variant="contained"
             onClick={handleAddCartao}
@@ -188,10 +256,10 @@ function CriaCliente() {
           >
             Adicionar Cartão
           </Button>
-        </Grid>            
+        </Grid>
         <Grid item xs={12}>
           <Grid container justifyContent="center">
-            <Button variant="contained" type="submit" size="large"  sx={{ mt: 2,mb: 2 }}>
+            <Button variant="contained" type="submit" size="large" sx={{ mt: 2, mb: 2 }}>
               Cadastrar
             </Button>
           </Grid>
